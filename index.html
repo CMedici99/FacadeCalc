@@ -6,58 +6,58 @@
 
 <style>
 body{
-font-family:Segoe UI, Arial, sans-serif;
-max-width:1200px;
-margin:auto;
-padding:20px;
-background:#f5f5f5;
+    font-family:Segoe UI, Arial, sans-serif;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+    background:#f5f5f5;
 }
 
 .section{
-background:white;
-padding:20px;
-margin-bottom:20px;
-border-radius:8px;
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:8px;
 }
 
 input{
-padding:8px;
-width:160px;
+    padding:8px;
+    width:160px;
 }
 
 label{
-display:inline-block;
-width:250px;
+    display:inline-block;
+    width:250px;
 }
 
 button{
-padding:10px 20px;
-background:#0078d4;
-color:white;
-border:none;
-border-radius:4px;
-cursor:pointer;
+    padding:10px 20px;
+    background:#0078d4;
+    color:white;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
 }
 
 table{
-width:100%;
-border-collapse:collapse;
+    width:100%;
+    border-collapse:collapse;
 }
 
 td,th{
-border:1px solid #ddd;
-padding:8px;
+    border:1px solid #ddd;
+    padding:8px;
 }
 
 th{
-background:#f0f0f0;
+    background:#f0f0f0;
 }
 
 .governing{
-background:#e8f5e9;
-padding:15px;
-border-radius:6px;
-margin-top:15px;
+    background:#e8f5e9;
+    padding:15px;
+    border-radius:6px;
+    margin-top:15px;
 }
 </style>
 
@@ -65,8 +65,8 @@ margin-top:15px;
 <body>
 
 <div class="section">
-<h1>FacadeCalc v0.5.1</h1>
-<p>CWCT TN14 Facade Support Calculator</p>
+    <h1>FacadeCalc v0.5.1</h1>
+    <p>CWCT TN14 Facade Support Calculator</p>
 </div>
 
 <div class="section">
@@ -101,11 +101,11 @@ margin-top:15px;
 <pre>
 DL1 ---------------- DL2
 
-| |
+|                    |
 
-| PANEL |
+|       PANEL        |
 
-| |
+|                    |
 
 RS1 ---------------- RS2
 </pre>
@@ -134,189 +134,188 @@ RS1 ---------------- RS2
 </div>
 
 <div class="section">
-<button onclick="calculate()">
-Calculate
-</button>
+    <button onclick="calculate()">
+        Calculate
+    </button>
 </div>
 
 <div class="section">
-<div id="results">
-Press Calculate
-</div>
+    <div id="results">
+        Press Calculate
+    </div>
 </div>
 
 <script>
 
 function calculate(){
 
-const width = Number(document.getElementById("width").value);
-const height = Number(document.getElementById("height").value);
-const dl = Number(document.getElementById("dl").value);
-const rs = Number(document.getElementById("rs").value);
-const bh = Number(document.getElementById("bh").value);
+    const width = Number(document.getElementById("width").value);
+    const height = Number(document.getElementById("height").value);
+    const dl = Number(document.getElementById("dl").value);
+    const rs = Number(document.getElementById("rs").value);
+    const bh = Number(document.getElementById("bh").value);
 
-const wind = Number(document.getElementById("wind").value);
-const density = Number(document.getElementById("density").value);
-const barrier = Number(document.getElementById("barrier").value);
+    const wind = Number(document.getElementById("wind").value);
+    const density = Number(document.getElementById("density").value);
+    const barrier = Number(document.getElementById("barrier").value);
 
-const area =
-(width / 1000) *
-(height / 1000);
+    const area =
+        (width / 1000) *
+        (height / 1000);
 
-const totalWind =
-area * wind;
+    const totalWind =
+        area * wind;
 
-const totalDead =
-area * density * 9.81 / 1000;
+    const totalDead =
+        area * density * 9.81 / 1000;
 
-const spacing =
-(dl - rs) / 1000;
+    const spacing =
+        (dl - rs) / 1000;
 
-const cg =
-(height / 1000) / 2;
+    const cg =
+        (height / 1000) / 2;
 
-const topReaction =
-totalWind *
-(cg - rs/1000) /
-spacing;
+    const topReaction =
+        totalWind *
+        (cg - rs/1000) /
+        spacing;
 
-const bottomReaction =
-totalWind - topReaction;
+    const bottomReaction =
+        totalWind - topReaction;
 
-const barrierTop =
-barrier *
-((bh/1000) - (rs/1000)) /
-spacing;
+    const barrierTop =
+        barrier *
+        ((bh/1000) - (rs/1000)) /
+        spacing;
 
-const barrierBottom =
-barrier - barrierTop;
+    const barrierBottom =
+        barrier - barrierTop;
 
-const y = 0.175;
-const zi = 0.065;
-const d = 0.065;
-const e = 0.055;
+    const y = 0.175;
+    const zi = 0.065;
+    const d = 0.065;
+    const e = 0.055;
 
-const denominator =
-(2 * e + d);
+    const denominator =
+        (2 * e + d);
 
-const deadBracket =
-(totalDead / 2) * 1.35;
+    const deadBracket =
+        (totalDead / 2) * 1.35;
 
-const upperWindR2 =
-(
-deadBracket * zi +
-((topReaction / 2) * 1.5) *
-(y/2 + e)
-)
-/
-denominator;
+    const upperWindR2 =
+        (
+            deadBracket * zi +
+            ((topReaction / 2) * 1.5) *
+            (y/2 + e)
+        )
+        /
+        denominator;
 
-const upperWindR1 =
-((topReaction / 2) * 1.5)
--
-upperWindR2;
+    const upperWindR1 =
+        ((topReaction / 2) * 1.5)
+        -
+        upperWindR2;
 
-const lowerWindR2 =
-(
-((bottomReaction / 2) * 1.5)
-*
-(y/2 + e)
-)
-/
-denominator;
+    const lowerWindR2 =
+        (
+            ((bottomReaction / 2) * 1.5)
+            *
+            (y/2 + e)
+        )
+        /
+        denominator;
 
-const lowerWindR1 =
-((bottomReaction / 2) * 1.5)
--
-lowerWindR2;
+    const lowerWindR1 =
+        ((bottomReaction / 2) * 1.5)
+        -
+        lowerWindR2;
 
-const upperBarrierR2 =
-(
-deadBracket * zi +
-((barrierTop / 2) * 1.5)
-*
-(y/2 + e)
-)
-/
-denominator;
+    const upperBarrierR2 =
+        (
+            deadBracket * zi +
+            ((barrierTop / 2) * 1.5)
+            *
+            (y/2 + e)
+        )
+        /
+        denominator;
 
-const upperBarrierR1 =
-((barrierTop / 2) * 1.5)
--
-upperBarrierR2;
+    const upperBarrierR1 =
+        ((barrierTop / 2) * 1.5)
+        -
+        upperBarrierR2;
 
-const lowerBarrierR2 =
-(
-((barrierBottom / 2) * 1.5)
-*
-(y/2 + e)
-)
-/
-denominator;
+    const lowerBarrierR2 =
+        (
+            ((barrierBottom / 2) * 1.5)
+            *
+            (y/2 + e)
+        )
+        /
+        denominator;
 
-const lowerBarrierR1 =
-((barrierBottom / 2) * 1.5)
--
-lowerBarrierR2;
+    const lowerBarrierR1 =
+        ((barrierBottom / 2) * 1.5)
+        -
+        lowerBarrierR2;
 
-const checks = [
-["Wind + Dead","Upper","R1",Math.abs(upperWindR1)],
-["Wind + Dead","Upper","R2",Math.abs(upperWindR2)],
-["Wind + Dead","Lower","R1",Math.abs(lowerWindR1)],
-["Wind + Dead","Lower","R2",Math.abs(lowerWindR2)],
-["Barrier + Dead","Upper","R1",Math.abs(upperBarrierR1)],
-["Barrier + Dead","Upper","R2",Math.abs(upperBarrierR2)],
-["Barrier + Dead","Lower","R1",Math.abs(lowerBarrierR1)],
-["Barrier + Dead","Lower","R2",Math.abs(lowerBarrierR2)]
-];
+    const checks = [
+        ["Wind + Dead","Upper","R1",Math.abs(upperWindR1)],
+        ["Wind + Dead","Upper","R2",Math.abs(upperWindR2)],
+        ["Wind + Dead","Lower","R1",Math.abs(lowerWindR1)],
+        ["Wind + Dead","Lower","R2",Math.abs(lowerWindR2)],
+        ["Barrier + Dead","Upper","R1",Math.abs(upperBarrierR1)],
+        ["Barrier + Dead","Upper","R2",Math.abs(upperBarrierR2)],
+        ["Barrier + Dead","Lower","R1",Math.abs(lowerBarrierR1)],
+        ["Barrier + Dead","Lower","R2",Math.abs(lowerBarrierR2)]
+    ];
 
-checks.sort((a,b)=>b[3]-a[3]);
+    checks.sort((a,b)=>b[3]-a[3]);
 
-const governing = checks[0];
+    const governing = checks[0];
 
-document.getElementById("results").innerHTML = `
+    document.getElementById("results").innerHTML = `
 
-<h2>Summary</h2>
+    <h2>Summary</h2>
 
-<table>
-<tr><td>Area</td><td>${area.toFixed(3)} m²</td></tr>
-<tr><td>Support Spacing</td><td>${(spacing*1000).toFixed(1)} mm</td></tr>
-<tr><td>Total Wind Load</td><td>${totalWind.toFixed(3)} kN</td></tr>
-<tr><td>Total Dead Load</td><td>${totalDead.toFixed(3)} kN</td></tr>
-</table>
+    <table>
+        <tr><td>Area</td><td>${area.toFixed(3)} m²</td></tr>
+        <tr><td>Support Spacing</td><td>${(spacing*1000).toFixed(1)} mm</td></tr>
+        <tr><td>Total Wind Load</td><td>${totalWind.toFixed(3)} kN</td></tr>
+        <tr><td>Total Dead Load</td><td>${totalDead.toFixed(3)} kN</td></tr>
+    </table>
 
-<h2>Wind + Dead</h2>
+    <h2>Wind + Dead</h2>
 
-<table>
-<tr><td>Upper R1</td><td>${upperWindR1.toFixed(3)} kN</td></tr>
-<tr><td>Upper R2</td><td>${upperWindR2.toFixed(3)} kN</td></tr>
-<tr><td>Lower R1</td><td>${lowerWindR1.toFixed(3)} kN</td></tr>
-<tr><td>Lower R2</td><td>${lowerWindR2.toFixed(3)} kN</td></tr>
-</table>
+    <table>
+        <tr><td>Upper R1</td><td>${upperWindR1.toFixed(3)} kN</td></tr>
+        <tr><td>Upper R2</td><td>${upperWindR2.toFixed(3)} kN</td></tr>
+        <tr><td>Lower R1</td><td>${lowerWindR1.toFixed(3)} kN</td></tr>
+        <tr><td>Lower R2</td><td>${lowerWindR2.toFixed(3)} kN</td></tr>
+    </table>
 
-<h2>Barrier + Dead</h2>
+    <h2>Barrier + Dead</h2>
 
-<table>
-<tr><td>Upper R1</td><td>${upperBarrierR1.toFixed(3)} kN</td></tr>
-<tr><td>Upper R2</td><td>${upperBarrierR2.toFixed(3)} kN</td></tr>
-<tr><td>Lower R1</td><td>${lowerBarrierR1.toFixed(3)} kN</td></tr>
-<tr><td>Lower R2</td><td>${lowerBarrierR2.toFixed(3)} kN</td></tr>
-</table>
+    <table>
+        <tr><td>Upper R1</td><td>${upperBarrierR1.toFixed(3)} kN</td></tr>
+        <tr><td>Upper R2</td><td>${upperBarrierR2.toFixed(3)} kN</td></tr>
+        <tr><td>Lower R1</td><td>${lowerBarrierR1.toFixed(3)} kN</td></tr>
+        <tr><td>Lower R2</td><td>${lowerBarrierR2.toFixed(3)} kN</td></tr>
+    </table>
 
-<div class="governing">
-<h2>Governing Result</h2>
+    <div class="governing">
+        <h2>Governing Result</h2>
 
-<p><strong>Load Case:</strong> ${governing[0]}</p>
-<p><strong>Bracket:</strong> ${governing[1]}</p>
-<p><strong>Fixing:</strong> ${governing[2]}</p>
-<p><strong>Force:</strong> ${governing[3].toFixed(3)} kN</p>
-</div>
+        <p><strong>Load Case:</strong> ${governing[0]}</p>
+        <p><strong>Bracket:</strong> ${governing[1]}</p>
+        <p><strong>Fixing:</strong> ${governing[2]}</p>
+        <p><strong>Force:</strong> ${governing[3].toFixed(3)} kN</p>
+    </div>
 
-`;
+    `;
 }
 
 </script>
 
 </body>
 </html>
-
