@@ -134,23 +134,68 @@ function calculate(){
             document.getElementById("height").value
         );
 
+    const dl =
+        Number(
+            document.getElementById("dl").value
+        );
+
+    const rs =
+        Number(
+            document.getElementById("rs").value
+        );
+
+    const wind =
+        Number(
+            document.getElementById("wind").value
+        );
+
+    const density =
+        Number(
+            document.getElementById("density").value
+        );
+
     const area =
         (width / 1000)
         *
         (height / 1000);
 
+    const spacing =
+        dl - rs;
+
+    const totalWind =
+        area * wind;
+
+    const totalDead =
+        area * density * 9.81 / 1000;
+
     document.getElementById(
         "results"
-    ).innerHTML =
+    ).innerHTML = `
 
-        "<p><b>Area:</b> "
-        +
-        area.toFixed(3)
-        +
-        " m²</p>";
+        <h2>Summary</h2>
+
+        <p>
+            Area:
+            ${area.toFixed(3)} m²
+        </p>
+
+        <p>
+            Support Spacing:
+            ${spacing.toFixed(1)} mm
+        </p>
+
+        <p>
+            Total Wind Load:
+            ${totalWind.toFixed(3)} kN
+        </p>
+
+        <p>
+            Total Dead Load:
+            ${totalDead.toFixed(3)} kN
+        </p>
+
+    `;
 }
-
-</script>
 
 </body>
 </html>
