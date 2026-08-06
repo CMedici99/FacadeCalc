@@ -1,46 +1,188 @@
-<script> 
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>FacadeCalc v0.6.0</title>
+
+<style>
+
+body{
+    font-family: Segoe UI, Arial, sans-serif;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+.section{
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+label{
+    display: inline-block;
+    width: 220px;
+}
+
+input{
+    width: 160px;
+    padding: 6px;
+}
+
+button{
+    padding: 10px 20px;
+    background: #0078d4;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td{
+    border: 1px solid #cccccc;
+    padding: 8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="section">
+<h1>FacadeCalc v0.6.0</h1>
+<p>Validated TN14 Calculator + DXF Reader</p>
+</div>
+
+<div class="section">
+
+<h2>DXF Upload</h2>
+
+<input
+    type="file"
+    id="dxfFile"
+    accept=".dxf"
+>
+
+<button onclick="loadDXF()">
+Load DXF
+</button>
+
+<p id="dxfStatus">
+No DXF selected
+</p>
+
+<p id="dxfLoadStatus">
+DXF not loaded
+</p>
+
+</div>
+
+<div class="section">
+
+<h2>Geometry</h2>
+
+<p><label>Panel Width (mm)</label><input id="width" value="1000"></p>
+<p><label>Panel Height (mm)</label><input id="height" value="2029"></p>
+<p><label>DL Support Level (mm)</label><input id="dl" value="1846"></p>
+<p><label>RS Support Level (mm)</label><input id="rs" value="337.5"></p>
+<p><label>Barrier Height (mm)</label><input id="bh" value="1100"></p>
+
+</div>
+
+<div class="section">
+
+<h2>Loads</h2>
+
+<p><label>Wind Pressure (kPa)</label><input id="wind" value="2"></p>
+<p><label>Density (kg/m²)</label><input id="density" value="50"></p>
+<p><label>Barrier Load (kN)</label><input id="barrier" value="1"></p>
+
+</div>
+
+<div class="section">
+
+<button onclick="calculate()">
+Calculate
+</button>
+
+</div>
+
+<div class="section">
+
+<div id="results">
+Press Calculate
+</div>
+
+</div>
+
+<script>
 
 let dxfContent = "";
 
 function loadDXF() {
 
-    const fileInput = document.getElementById("dxfFile");
-    const status = document.getElementById("dxfStatus");
-    const loadStatus = document.getElementById("dxfLoadStatus");
+    const fileInput =
+        document.getElementById("dxfFile");
+
+    const dxfStatus =
+        document.getElementById("dxfStatus");
+
+    const dxfLoadStatus =
+        document.getElementById("dxfLoadStatus");
 
     if (!fileInput.files.length) {
-        status.textContent = "No DXF selected";
-        loadStatus.textContent = "DXF not loaded";
+
+        dxfStatus.textContent =
+            "No DXF selected";
+
+        dxfLoadStatus.textContent =
+            "DXF not loaded";
+
         return;
     }
 
-    const file = fileInput.files[0];
+    const file =
+        fileInput.files[0];
 
-    status.textContent =
+    dxfStatus.textContent =
         file.name +
         " (" +
         file.size.toLocaleString() +
         " bytes)";
 
-    const reader = new FileReader();
+    dxfLoadStatus.textContent =
+        "Loading DXF...";
 
-    reader.onload = function (event) {
+    const reader =
+        new FileReader();
 
-        dxfContent = event.target.result;
+    reader.onload = function(event){
+
+        dxfContent =
+            event.target.result;
 
         const lines =
-            dxfContent.split(/\r\n|\r|\n/);
+            dxfContent.split(/\r\n|\n|\r/);
 
-        const layers = new Set();
+        const layers =
+            new Set();
 
-        for (let i = 0; i < lines.length - 1; i++) {
+        for(let i = 0; i < lines.length - 1; i++){
 
-            if (lines[i].trim() === "8") {
+            if(lines[i].trim() === "8"){
 
                 const layerName =
                     lines[i + 1].trim();
 
-                if (layerName) {
+                if(layerName){
                     layers.add(layerName);
                 }
             }
@@ -49,29 +191,177 @@ function loadDXF() {
         const layerList =
             Array.from(layers).sort();
 
-        loadStatus.innerHTML =
-            "<b>DXF Loaded Successfully</b>" +
-            "<br>" +
+        dxfLoadStatus.innerHTML =
+
+            "<strong>DXF Loaded Successfully</strong><br>" +
+
             "Line Count: " +
             lines.length +
+
             "<br>" +
+
             "Layer Count: " +
             layerList.length +
+
             "<br><br>" +
+
             layerList.join("<br>");
     };
 
-    reader.onerror = function () {
-        loadStatus.textContent = "DXF Read Failed";
+    reader.onerror = function(){
+
+        dxfLoadStatus.textContent =
+            "DXF Read Failed";
+
     };
 
     reader.readAsText(file);
 }
 
-function calculate() {
+function calculate(){
 
-    document.getElementById("results").innerHTML =
-        "<h2>Calculator Still Working</h2>";
+    const width =
+        Number(document.getElementById("width").value);
+
+    const height =
+        Number(document.getElementById("height").value);
+
+    const dl =
+        Number(document.getElementById("dl").value);
+
+    const rs =
+        Number(document.getElementById("rs").value);
+
+    const bh =
+        Number(document.getElementById("bh").value);
+
+    const wind =
+        Number(document.getElementById("wind").value);
+
+    const density =
+        Number(document.getElementById("density").value);
+
+    const barrier =
+        Number(document.getElementById("barrier").value);
+
+    const area =
+        (width / 1000) *
+        (height / 1000);
+
+    const totalWind =
+        area * wind;
+
+    const totalDead =
+        area * density * 9.81 / 1000;
+
+    const spacing =
+        (dl - rs) / 1000;
+
+    const cg =
+        (height / 1000) / 2;
+
+    const topReaction =
+        totalWind *
+        ((cg - rs / 1000) / spacing);
+
+    const bottomReaction =
+        totalWind -
+        topReaction;
+
+    const barrierTop =
+        barrier *
+        (((bh / 1000) - (rs / 1000)) / spacing);
+
+    const barrierBottom =
+        barrier -
+        barrierTop;
+
+    const y = 0.175;
+    const zi = 0.065;
+    const d = 0.065;
+    const e = 0.055;
+
+    const denominator =
+        (2 * e + d);
+
+    const deadBracket =
+        (totalDead / 2) * 1.35;
+
+    const upperWindR2 =
+        (
+            deadBracket * zi +
+            ((topReaction / 2) * 1.5) *
+            (y / 2 + e)
+        ) / denominator;
+
+    const upperWindR1 =
+        ((topReaction / 2) * 1.5) -
+        upperWindR2;
+
+    const lowerWindR2 =
+        (
+            ((bottomReaction / 2) * 1.5) *
+            (y / 2 + e)
+        ) / denominator;
+
+    const lowerWindR1 =
+        ((bottomReaction / 2) * 1.5) -
+        lowerWindR2;
+
+    const upperBarrierR2 =
+        (
+            deadBracket * zi +
+            ((barrierTop / 2) * 1.5) *
+            (y / 2 + e)
+        ) / denominator;
+
+    const upperBarrierR1 =
+        ((barrierTop / 2) * 1.5) -
+        upperBarrierR2;
+
+    const lowerBarrierR2 =
+        (
+            ((barrierBottom / 2) * 1.5) *
+            (y / 2 + e)
+        ) / denominator;
+
+    const lowerBarrierR1 =
+        ((barrierBottom / 2) * 1.5) -
+        lowerBarrierR2;
+
+    document.getElementById("results").innerHTML = `
+
+        <h2>Summary</h2>
+
+        <table>
+            <tr><td>Area</td><td>${area.toFixed(3)} m²</td></tr>
+            <tr><td>Support Spacing</td><td>${(spacing * 1000).toFixed(1)} mm</td></tr>
+            <tr><td>Total Wind Load</td><td>${totalWind.toFixed(3)} kN</td></tr>
+            <tr><td>Total Dead Load</td><td>${totalDead.toFixed(3)} kN</td></tr>
+        </table>
+
+        <h2>Wind + Dead</h2>
+
+        <table>
+            <tr><td>Upper R1</td><td>${upperWindR1.toFixed(3)} kN</td></tr>
+            <tr><td>Upper R2</td><td>${upperWindR2.toFixed(3)} kN</td></tr>
+            <tr><td>Lower R1</td><td>${lowerWindR1.toFixed(3)} kN</td></tr>
+            <tr><td>Lower R2</td><td>${lowerWindR2.toFixed(3)} kN</td></tr>
+        </table>
+
+        <h2>Barrier + Dead</h2>
+
+        <table>
+            <tr><td>Upper R1</td><td>${upperBarrierR1.toFixed(3)} kN</td></tr>
+            <tr><td>Upper R2</td><td>${upperBarrierR2.toFixed(3)} kN</td></tr>
+            <tr><td>Lower R1</td><td>${lowerBarrierR1.toFixed(3)} kN</td></tr>
+            <tr><td>Lower R2</td><td>${lowerBarrierR2.toFixed(3)} kN</td></tr>
+        </table>
+
+    `;
 }
 
 </script>
+
+</body>
+</html>
