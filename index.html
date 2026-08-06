@@ -189,23 +189,67 @@ function loadDXF() {
         }
 
         const layerList =
-            Array.from(layers).sort();
+    Array.from(layers).sort();
 
-        dxfLoadStatus.innerHTML =
+const panelLayer =
+    layerList.find(
+        x => x.toUpperCase() === "PANEL_GEOMETRY"
+    ) || "Not Found";
 
-            "<strong>DXF Loaded Successfully</strong><br>" +
+const deadloadLayer =
+    layerList.find(
+        x => x.toUpperCase() === "DEADLOAD"
+    ) || "Not Found";
 
-            "Line Count: " +
-            lines.length +
+const restrainLayer =
+    layerList.find(
+        x => x.toUpperCase() === "RESTRAIN"
+    ) || "Not Found";
 
-            "<br>" +
+const barrierLayer =
+    layerList.find(
+        x => x.toUpperCase() === "BARRIER"
+    ) || "Not Found";
 
-            "Layer Count: " +
-            layerList.length +
+dxfLoadStatus.innerHTML =
 
-            "<br><br>" +
+    "<strong>DXF Loaded Successfully</strong><br><br>" +
 
-            layerList.join("<br>");
+    "Line Count: " +
+    lines.length +
+
+    "<br>" +
+
+    "Layer Count: " +
+    layerList.length +
+
+    "<br><br>" +
+
+    "<strong>Detected Layers</strong><br>" +
+
+    "Panel: " +
+    panelLayer +
+
+    "<br>" +
+
+    "Deadload: " +
+    deadloadLayer +
+
+    "<br>" +
+
+    "Restrain: " +
+    restrainLayer +
+
+    "<br>" +
+
+    "Barrier: " +
+    barrierLayer +
+
+    "<br><br>" +
+
+    "<strong>All Layers</strong><br>" +
+
+    layerList.join("<br>");
     };
 
     reader.onerror = function(){
