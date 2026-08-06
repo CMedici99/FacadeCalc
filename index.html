@@ -159,6 +159,7 @@ function loadDXF() {
         " bytes)";
 
     dxfLoadStatus.textContent =
+        
         "Loading DXF...";
 
     const reader =
@@ -172,6 +173,8 @@ function loadDXF() {
 const lines =
     dxfContent.split(/\r\n|\n|\r/);
 
+alert("SEARCHING FOR LWPOLYLINE");
+   
 for(let i = 0; i < lines.length - 1; i++){
 
     if(lines[i].trim() === "LWPOLYLINE"){
@@ -320,12 +323,6 @@ const barrierHeight =
     brPoints.length
         ? brPoints[0]
         : 0;
-alert(
-    "DL=" + dlLevel +
-    "\nRS=" + rsLevel +
-    "\nBR=" + barrierHeight
-);
-
           
 if(dlLevel > 0){
 
