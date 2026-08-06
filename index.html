@@ -1,134 +1,149 @@
-<script>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>FacadeCalc v0.5.1</title>
 
-let dxfContent = "";
-
-function loadDXF() {
-
-    const fileInput =
-        document.getElementById("dxfFile");
-
-    const status =
-        document.getElementById("dxfStatus");
-
-    const loadStatus =
-        document.getElementById("dxfLoadStatus");
-
-    if (!fileInput || fileInput.files.length === 0) {
-
-        status.innerHTML =
-            "No DXF selected";
-
-        loadStatus.innerHTML =
-            "DXF not loaded";
-
-        return;
-    }
-
-    const file =
-        fileInput.files[0];
-
-    status.innerHTML =
-        "Selected: " +
-        file.name +
-        " (" +
-        file.size.toLocaleString() +
-        " bytes)";
-
-    loadStatus.innerHTML =
-        "Loading DXF...";
-
-    const reader =
-        new FileReader();
-
-    reader.onload = function(event) {
-
-        dxfContent =
-            event.target.result;
-
-        const lines =
-            dxfContent.split(/\r?\n/);
-
-        const upperDXF =
-            dxfContent.toUpperCase();
-
-        const hasTables =
-            upperDXF.includes("TABLES");
-
-        const hasEntities =
-            upperDXF.includes("ENTITIES");
-
-        const layerMatches =
-            upperDXF.match(/\bLAYER\b/g);
-
-        const layerCount =
-            layerMatches
-                ? layerMatches.length
-                : 0;
-
-        loadStatus.innerHTML =
-
-            "<strong>DXF Loaded Successfully</strong><br>" +
-
-            "Line Count: " +
-            lines.length +
-
-            "<br>" +
-
-            "TABLES: " +
-            (hasTables ? "YES" : "NO") +
-
-            "<br>" +
-
-            "ENTITIES: " +
-            (hasEntities ? "YES" : "NO") +
-
-            "<br>" +
-
-            "Layer References: " +
-            layerCount;
-    };
-
-    reader.onerror = function() {
-
-        loadStatus.innerHTML =
-            "DXF Read Failed";
-
-    };
-
-    reader.readAsText(file);
+<style>
+body{
+    font-family:Segoe UI, Arial, sans-serif;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+    background:#f5f5f5;
 }
+
+.section{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:8px;
+}
+
+label{
+    display:inline-block;
+    width:220px;
+}
+
+input{
+    width:160px;
+    padding:6px;
+}
+
+button{
+    padding:10px 20px;
+    background:#0078d4;
+    color:white;
+    border:none;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+td{
+    border:1px solid #ccc;
+    padding:8px;
+}
+
+.governing{
+    background:#e8f5e9;
+    padding:15px;
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="section">
+<h1>FacadeCalc v0.5.1</h1>
+<p>Validated TN14 Calculator</p>
+</div>
+    
+<div class="section">
+
+<h2>DXF Upload</h2>
+
+<input
+    type="file"
+    id="dxfFile"
+    accept=".dxf"
+>
+
+<button onclick="loadDXF()">
+Load DXF
+</button>
+
+<p id="dxfStatus">
+No DXF selected
+</p>
+
+<p id="dxfLoadStatus">
+DXF not loaded
+</p>
+
+</div>
+    
+<div class="section">
+    
+<h2>Geometry</h2>
+
+<p><label>Panel Width (mm)</label><input id="width" value="1000"></p>
+
+<p><label>Panel Height (mm)</label><input id="height" value="2029"></p>
+
+<p><label>DL Support Level (mm)</label><input id="dl" value="1846"></p>
+
+<p><label>RS Support Level (mm)</label><input id="rs" value="337.5"></p>
+
+<p><label>Barrier Height (mm)</label><input id="bh" value="1100"></p>
+
+</div>
+
+<div class="section">
+<h2>Loads</h2>
+
+<p><label>Wind Pressure (kPa)</label><input id="wind" value="2"></p>
+
+<p><label>Density (kg/m²)</label><input id="density" value="50"></p>
+
+<p><label>Barrier Load (kN)</label><input id="barrier" value="1"></p>
+
+</div>
+
+<div class="section">
+<button onclick="calculate()">
+Calculate
+</button>
+</div>
+
+<div class="section">
+<div id="results">
+Press Calculate
+</div>
+</div>
+
+<script>
 
 function calculate(){
 
-    const width =
-        Number(document.getElementById("width").value);
+    const width = Number(document.getElementById("width").value);
+    const height = Number(document.getElementById("height").value);
 
-    const height =
-        Number(document.getElementById("height").value);
+    const dl = Number(document.getElementById("dl").value);
+    const rs = Number(document.getElementById("rs").value);
 
-    const dl =
-        Number(document.getElementById("dl").value);
+    const bh = Number(document.getElementById("bh").value);
 
-    const rs =
-        Number(document.getElementById("rs").value);
+    const wind = Number(document.getElementById("wind").value);
+    const density = Number(document.getElementById("density").value);
+    const barrier = Number(document.getElementById("barrier").value);
 
-    const bh =
-        Number(document.getElementById("bh").value);
+    const area = (width/1000)*(height/1000);
 
-    const wind =
-        Number(document.getElementById("wind").value);
-
-    const density =
-        Number(document.getElementById("density").value);
-
-    const barrier =
-        Number(document.getElementById("barrier").value);
-
-    const area =
-        (width/1000)*(height/1000);
-
-    const totalWind =
-        area * wind;
+    const totalWind = area * wind;
 
     const totalDead =
         area * density * 9.81 / 1000;
@@ -145,8 +160,7 @@ function calculate(){
         spacing;
 
     const bottomReaction =
-        totalWind -
-        topReaction;
+        totalWind - topReaction;
 
     const barrierTop =
         barrier *
@@ -155,8 +169,7 @@ function calculate(){
         spacing;
 
     const barrierBottom =
-        barrier -
-        barrierTop;
+        barrier - barrierTop;
 
     const y = 0.175;
     const zi = 0.065;
@@ -250,6 +263,10 @@ function calculate(){
     </table>
 
     `;
+
 }
 
 </script>
+
+</body>
+</html>
