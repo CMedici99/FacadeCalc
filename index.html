@@ -172,6 +172,21 @@ function loadDXF() {
 const lines =
     dxfContent.split(/\r\n|\n|\r/);
 
+for(let i = 0; i < lines.length - 1; i++){
+
+    if(lines[i].trim() === "LWPOLYLINE"){
+
+        alert(
+            lines.slice(
+                i,
+                i + 80
+            ).join("\n")
+        );
+
+        break;
+    }
+}
+          
 const dlPoints = [];
 const rsPoints = [];
 const brPoints = [];
