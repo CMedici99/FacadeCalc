@@ -127,8 +127,109 @@ Press Calculate
 
 <script>
 
-function calculate(){
+let dxfContent = "";
 
+function loadDXF(){
+
+    const fileInput =
+        document.getElementById("dxfFile");
+
+    const status =
+        document.getElementById("dxfStatus");
+
+    const loadStatus =
+        document.getElementById("dxfLoadStatus");
+
+    if(fileInput.files.length === 0){
+
+        status.innerHTML =
+            "No DXF selected";
+
+        return;
+    }
+
+    const file =
+        fileInput.files[0];
+
+    status.innerHTML =
+
+        "Selected: " +
+        file.name +
+        " (" +
+        file.size.toLocaleString() +
+        " bytes)";
+
+    const reader =
+        new FileReader();
+
+    reader.onload = function(event){
+
+        dxfContent =
+            event.target.result;
+
+        const lines =
+            dxfContent.split(/\r?\n/);
+
+        const upperDXF =
+            dxfContent.toUpperCase();
+
+        const hasTables =
+            upperDXF.includes("TABLES");
+
+        const hasEntities =
+            upperDXF.includes("ENTITIES");
+
+        const layers =
+            new Set();
+
+        for(let i = 0; i < lines.length - 1; i++){
+
+            if(lines[i].trim() === "8"){
+
+                const layerName =
+                    lines[i + 1].trim();
+
+                if(layerName !== ""){
+
+                    layers.add(layerName);
+
+                }
+            }
+        }
+
+        const layerList =
+            Array.from(layers).sort();
+
+        loadStatus.innerHTML =
+
+            "DXF Loaded Successfully<br>" +
+
+            "Line Count: " +
+            lines.length +
+
+            "<br>" +
+
+            "TABLES: " +
+            (hasTables ? "YES" : "NO") +
+
+            "<br>" +
+
+            "ENTITIES: " +
+            (hasEntities ? "YES" : "NO") +
+
+            "<br><br>" +
+
+            "Layers Found (" +
+            layerList.length +
+            ")<br><br>" +
+
+            layerList.join("<br>");
+    };
+
+    reader.readAsText(file);
+}
+
+function calculate(){
     const width = Number(document.getElementById("width").value);
     const height = Number(document.getElementById("height").value);
 
