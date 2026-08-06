@@ -176,6 +176,82 @@ const dlPoints = [];
 const rsPoints = [];
 const brPoints = [];
 
+          let panelWidth = 0;
+let panelHeight = 0;
+
+for(let i = 0; i < lines.length - 1; i++){
+
+    if(
+        lines[i].trim() === "LWPOLYLINE"
+    ){
+
+        let panelFound = false;
+        let xCoords = [];
+        let yCoords = [];
+
+        for(
+            let j = i;
+            j < i + 200 && j < lines.length - 1;
+            j++
+        ){
+
+            if(
+                lines[j].trim() === "8" &&
+                lines[j + 1].trim() === "PANEL_GEOMETRY"
+            ){
+                panelFound = true;
+            }
+
+            if(
+                panelFound &&
+                lines[j].trim() === "10"
+            ){
+
+                xCoords.push(
+                    Number(lines[j + 1])
+                );
+            }
+
+            if(
+                panelFound &&
+                lines[j].trim() === "20"
+            ){
+
+                yCoords.push(
+                    Number(lines[j + 1])
+                );
+            }
+        }
+
+        if(
+            panelFound &&
+            xCoords.length > 0 &&
+            yCoords.length > 0
+        ){
+
+            const xmin =
+                Math.min(...xCoords);
+
+            const xmax =
+                Math.max(...xCoords);
+
+            const ymin =
+                Math.min(...yCoords);
+
+            const ymax =
+                Math.max(...yCoords);
+
+            panelWidth =
+                xmax - xmin;
+
+            panelHeight =
+                ymax - ymin;
+
+            break;
+        }
+    }
+}
+
 for(let i = 0; i < lines.length - 10; i++){
 
     if(lines[i].trim() !== "INSERT"){
