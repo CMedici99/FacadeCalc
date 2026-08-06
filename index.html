@@ -170,34 +170,10 @@ function loadDXF() {
     dxfContent =
     event.target.result;
 
-document.getElementById("dxfLoadStatus").textContent =
-    dxfContent.substring(0,1000);
-
 const lines =
     dxfContent.split(/\r\n|\n|\r/);
 
-alert(
-    dxfContent.substring(
-        dxfContent.indexOf("PANEL_GEOMETRY") - 200,
-        dxfContent.indexOf("PANEL_GEOMETRY") + 500
-    )
-);
-   
-for(let i = 0; i < lines.length - 1; i++){
-
-    if(lines[i].trim() === "LWPOLYLINE"){
-
-        alert(
-            lines.slice(
-                i,
-                i + 80
-            ).join("\n")
-        );
-
-        break;
-    }
-}
-          
+            
 const dlPoints = [];
 const rsPoints = [];
 const brPoints = [];
@@ -355,12 +331,7 @@ if(panelHeight > 0){
     document.getElementById("height").value =
         panelHeight.toFixed(0);
 }
-
-alert(
-    "Width = " + panelWidth +
-    "\nHeight = " + panelHeight
-);
-          
+         
 if(barrierHeight > 0){
 
     document.getElementById("bh").value =
