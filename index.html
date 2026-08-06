@@ -172,16 +172,16 @@ function calculate(){
         ((barrierBottom / 2) * 1.5)
         - lowerBarrierR2;
 
-    const checks = [
+   const checks = [
 
-        ["Wind + Dead","Upper","R1",
-        Math.abs(upperWindR1)],
+    ["Wind + Dead","Upper","R1", Math.abs(upperWindR1)],
+    ["Wind + Dead","Upper","R2", Math.abs(upperWindR2)],
+    ["Wind + Dead","Lower","R1", Math.abs(lowerWindR1)],
+    ["Wind + Dead","Lower","R2", Math.abs(lowerWindR2)],
 
-        ["Wind + Dead","Upper","R2",
-        Math.abs(upperWindR2)],
+    ["Barrier + Dead","Upper","R1", Math.abs(upperBarrierR1)],
+    ["Barrier + Dead","Upper","R2", Math.abs(upperBarrierR2)],
+    ["Barrier + Dead","Lower","R1", Math.abs(lowerBarrierR1)],
+    ["Barrier + Dead","Lower","R2", Math.abs(lowerBarrierR2)]
 
-        ["Wind + Dead","Lower","R1",
-        Math.abs(lowerWindR1)],
-
-        ["Wind + Dead","Lower","R2",
-        
+];
