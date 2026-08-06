@@ -200,13 +200,30 @@ reader.onload = function(event){
     const lines =
         dxfContent.split(/\r?\n/);
 
-    document.getElementById(
-        "dxfLoadStatus"
-    ).innerHTML =
+const hasEntities =
+    dxfContent.includes("ENTITIES");
 
-        "DXF Loaded Successfully<br>" +
-        "Line Count = " +
-        lines.length;
+const hasTables =
+    dxfContent.includes("TABLES");
+
+document.getElementById(
+    "dxfLoadStatus"
+).innerHTML =
+
+    "DXF Loaded Successfully<br>" +
+
+    "Line Count = " +
+    lines.length +
+
+    "<br><br>" +
+
+    "TABLES: " +
+    (hasTables ? "YES" : "NO") +
+
+    "<br>" +
+
+    "ENTITIES: " +
+    (hasEntities ? "YES" : "NO");
 
 
     };
