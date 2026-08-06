@@ -329,36 +329,81 @@ function calculate(){
         ((barrierBottom / 2) * 1.5) -
         lowerBarrierR2;
 
-    document.getElementById("results").innerHTML = `
+   document.getElementById("results").innerHTML = `
 
-        <h2>Summary</h2>
+<h2>Summary</h2>
 
-        <table>
-            <tr><td>Area</td><td>${area.toFixed(3)} m²</td></tr>
-            <tr><td>Support Spacing</td><td>${(spacing * 1000).toFixed(1)} mm</td></tr>
-            <tr><td>Total Wind Load</td><td>${totalWind.toFixed(3)} kN</td></tr>
-            <tr><td>Total Dead Load</td><td>${totalDead.toFixed(3)} kN</td></tr>
-        </table>
+<table>
+    <tr>
+        <td>Area</td>
+        <td>${area.toFixed(3)} m²</td>
+    </tr>
 
-        <h2>Wind + Dead</h2>
+    <tr>
+        <td>Support Spacing</td>
+        <td>${(spacing * 1000).toFixed(1)} mm</td>
+    </tr>
 
-        <table>
-            <tr><td>Upper R1</td><td>${upperWindR1.toFixed(3)} kN</td></tr>
-            <tr><td>Upper R2</td><td>${upperWindR2.toFixed(3)} kN</td></tr>
-            <tr><td>Lower R1</td><td>${lowerWindR1.toFixed(3)} kN</td></tr>
-            <tr><td>Lower R2</td><td>${lowerWindR2.toFixed(3)} kN</td></tr>
-        </table>
+    <tr>
+        <td>Total Wind Load</td>
+        <td>${totalWind.toFixed(3)} kN</td>
+    </tr>
 
-        <h2>Barrier + Dead</h2>
+    <tr>
+        <td>Total Dead Load</td>
+        <td>${totalDead.toFixed(3)} kN</td>
+    </tr>
+</table>
 
-        <table>
-            <tr><td>Upper R1</td><td>${upperBarrierR1.toFixed(3)} kN</td></tr>
-            <tr><td>Upper R2</td><td>${upperBarrierR2.toFixed(3)} kN</td></tr>
-            <tr><td>Lower R1</td><td>${lowerBarrierR1.toFixed(3)} kN</td></tr>
-            <tr><td>Lower R2</td><td>${lowerBarrierR2.toFixed(3)} kN</td></tr>
-        </table>
+<h2>Wind + Dead</h2>
 
-    `;
+<table>
+    <tr>
+        <td>Upper R1</td>
+        <td>${upperWindR1.toFixed(3)} kN</td>
+    </tr>
+
+    <tr>
+        <td>Upper R2</td>
+        <td>${upperWindR2.toFixed(3)} kN</td>
+    </tr>
+
+    <tr>
+        <td>Lower R1</td>
+        <td>${lowerWindR1.toFixed(3)} kN</td>
+    </tr>
+
+    <tr>
+        <td>Lower R2</td>
+        <td>${lowerWindR2.toFixed(3)} kN</td>
+    </tr>
+</table>
+
+<h2>Barrier + Dead</h2>
+
+<table>
+    <tr>
+        <td>Upper R1</td>
+        <td>${upperBarrierR1.toFixed(3)} kN</td>
+    </tr>
+
+    <tr>
+        <td>Upper R2</td>
+        <td>${upperBarrierR2.toFixed(3)} kN</td>
+    </tr>
+
+    <tr>
+        <td>Lower R1</td>
+        <td>${lowerBarrierR1.toFixed(3)} kN</td>
+    </tr>
+
+    <tr>
+        <td>Lower R2</td>
+        <td>${lowerBarrierR2.toFixed(3)} kN</td>
+    </tr>
+</table>
+
+`;
 }
 
 </script>
