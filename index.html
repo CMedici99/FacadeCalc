@@ -338,21 +338,30 @@ if(barrierHeight > 0){
         barrierHeight.toFixed(1);
 }
 
-const layers =
-    new Set();
+const layers = new Set();
 
-    for(let i = 0; i < lines.length - 1; i++){
+const validLayers = [
+    "PANEL_GEOMETRY",
+    "DEADLOAD",
+    "RESTRAIN",
+    "BARRIER"
+];
 
-        if(lines[i].trim() === "8"){
+for(let i = 0; i < lines.length - 1; i++){
 
-            const layerName =
-                lines[i + 1].trim();
+    if(lines[i].trim() === "8"){
 
-            if(layerName){
-                layers.add(layerName);
-            }
+        const layerName =
+            lines[i + 1].trim();
+
+        if(
+            validLayers.includes(layerName)
+        ){
+            layers.add(layerName);
         }
     }
+}
+          
    const layerList =
     Array.from(layers).sort();
 
