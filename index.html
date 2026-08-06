@@ -169,32 +169,6 @@ function loadDXF() {
         dxfContent =
             event.target.result;
 
-        const entitiesPos =
-            dxfContent.indexOf("ENTITIES");
-
-    alert(
-        dxfContent.substring(
-            entitiesPos,
-            entitiesPos + 2000
-        )
-    );
-
-        const lines =
-        dxfContent.split(/\r\n|\n|\r/);
-        
-     const pos =
-   dxfContent.toUpperCase().indexOf("LWPOLYLINE");
-
-if(pos >= 0){
-
-    alert(
-        dxfContent.substring(
-            pos,
-            pos + 1000
-        )
-    );
-}
-
         const lines =
             dxfContent.split(/\r\n|\n|\r/);
 
