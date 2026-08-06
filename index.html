@@ -201,10 +201,10 @@ reader.onload = function(event){
         dxfContent.split(/\r?\n/);
 
 const hasEntities =
-    dxfContent.includes("ENTITIES");
+    dxfContent.toUpperCase().includes("ENTITIES");
 
 const hasTables =
-    dxfContent.includes("TABLES");
+    dxfContent.toUpperCase().includes("TABLES");
 
 document.getElementById(
     "dxfLoadStatus"
