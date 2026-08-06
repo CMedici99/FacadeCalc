@@ -197,11 +197,22 @@ function loadDXF(){
         dxfContent =
             event.target.result;
 
-        document.getElementById(
-            "dxfLoadStatus"
-        ).innerHTML =
+       const lines =
+    dxfContent.split("\n");
 
-            "DXF Loaded Successfully";
+document.getElementById(
+    "dxfLoadStatus"
+).innerHTML =
+
+    "DXF Loaded Successfully<br>" +
+
+    "DXF contains " +
+
+    lines.length.toLocaleString()
+
+    +
+
+    " lines";
     };
 
     reader.readAsText(file);
