@@ -7,12 +7,19 @@ function loadDXF() {
     const fileInput =
         document.getElementById("dxfFile");
 
-    if (fileInput.files.length === 0) {
+    const status =
+        document.getElementById("dxfStatus");
 
-        document.getElementById(
-            "dxfStatus"
-        ).innerHTML =
+    const loadStatus =
+        document.getElementById("dxfLoadStatus");
+
+    if (!fileInput || fileInput.files.length === 0) {
+
+        status.innerHTML =
             "No DXF selected";
+
+        loadStatus.innerHTML =
+            "DXF not loaded";
 
         return;
     }
@@ -20,14 +27,15 @@ function loadDXF() {
     const file =
         fileInput.files[0];
 
-    document.getElementById(
-        "dxfStatus"
-    ).innerHTML =
+    status.innerHTML =
         "Selected: " +
         file.name +
         " (" +
         file.size.toLocaleString() +
         " bytes)";
+
+    loadStatus.innerHTML =
+        "Loading DXF...";
 
     const reader =
         new FileReader();
@@ -50,16 +58,14 @@ function loadDXF() {
             upperDXF.includes("ENTITIES");
 
         const layerMatches =
-            upperDXF.match(/LAYER/g);
+            upperDXF.match(/\bLAYER\b/g);
 
         const layerCount =
             layerMatches
                 ? layerMatches.length
                 : 0;
 
-        document.getElementById(
-            "dxfLoadStatus"
-        ).innerHTML =
+        loadStatus.innerHTML =
 
             "DXF Loaded Successfully<br>" +
 
@@ -80,6 +86,12 @@ function loadDXF() {
 
             "Layer References: " +
             layerCount;
+    };
+
+    reader.onerror = function() {
+
+        loadStatus.innerHTML =
+            "DXF Read Failed";
 
     };
 
@@ -110,9 +122,7 @@ function calculate() {
     const totalDead =
         area * density * 9.81 / 1000;
 
-    document.getElementById(
-        "results"
-    ).innerHTML =
+    document.getElementById("results").innerHTML =
 
         "<h2>Summary</h2>" +
 
