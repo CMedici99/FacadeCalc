@@ -188,68 +188,62 @@ function loadDXF() {
             }
         }
 
-        const layerList =
+   const layerList =
     Array.from(layers).sort();
 
 const panelLayer =
-    layerList.find(
-        x => x.toUpperCase() === "PANEL_GEOMETRY"
-    ) || "Not Found";
+    layerList.includes("PANEL_GEOMETRY")
+        ? "PANEL_GEOMETRY"
+        : "Not Found";
 
 const deadloadLayer =
-    layerList.find(
-        x => x.toUpperCase() === "DEADLOAD"
-    ) || "Not Found";
+    layerList.includes("DEADLOAD")
+        ? "DEADLOAD"
+        : "Not Found";
 
 const restrainLayer =
-    layerList.find(
-        x => x.toUpperCase() === "RESTRAIN"
-    ) || "Not Found";
+    layerList.includes("RESTRAIN")
+        ? "RESTRAIN"
+        : "Not Found";
 
 const barrierLayer =
-    layerList.find(
-        x => x.toUpperCase() === "BARRIER"
-    ) || "Not Found";
+    layerList.includes("BARRIER")
+        ? "BARRIER"
+        : "Not Found";
 
 dxfLoadStatus.innerHTML =
-
     "<strong>DXF Loaded Successfully</strong><br><br>" +
 
-    "Line Count: " +
-    lines.length +
+    "Line Count: " + lines.length +
 
     "<br>" +
 
-    "Layer Count: " +
-    layerList.length +
+    "Layer Count: " + layerList.length +
 
     "<br><br>" +
 
     "<strong>Detected Layers</strong><br>" +
 
-    "Panel: " +
-    panelLayer +
+    "Panel: " + panelLayer +
 
     "<br>" +
 
-    "Deadload: " +
-    deadloadLayer +
+    "Deadload: " + deadloadLayer +
 
     "<br>" +
 
-    "Restrain: " +
-    restrainLayer +
+    "Restrain: " + restrainLayer +
 
     "<br>" +
 
-    "Barrier: " +
-    barrierLayer +
+    "Barrier: " + barrierLayer +
 
     "<br><br>" +
 
     "<strong>All Layers</strong><br>" +
 
-    layerList.join("<br>");
+    layerList.join("<br>"); 
+       
     };
 
     reader.onerror = function(){
