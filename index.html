@@ -1,3 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>FacadeCalc v0.6.0</title>
+
+<style>
+body{
+    font-family: Segoe UI, Arial, sans-serif;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+    background:#f5f5f5;
+}
+
+.section{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:8px;
+}
+
+label{
+    display:inline-block;
+    width:220px;
+}
+
+input{
+    width:160px;
+    padding:6px;
+}
+
+button{
+    padding:10px 20px;
+    background:#0078d4;
+    color:white;
+    border:none;
+    border-radius:4px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+td{
+    border:1px solid #ccc;
+    padding:8px;
+}
+
+h2{
+    margin-top:0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="section">
+    <h1>FacadeCalc v0.6.0</h1>
+    <p>Validated TN14 Calculator</p>
+</div>
+
+<div class="section">
+
+    <h2>DXF Upload</h2>
+
+    <input
+        type="file"
+        id="dxfFile"
+        accept=".dxf"
+        onchange="showDXFName()"
+    >
+
+    <p id="dxfStatus">
+        No DXF selected
+    </p>
+
+</div>
+
+<div class="section">
+
+    <h2>Geometry</h2>
+
+    <p>
+        <label>Panel Width (mm)</label>
+        <input id="width" value="1000">
+    </p>
+
+    <p>
+        <label>Panel Height (mm)</label>
+        <input id="height" value="2029">
+    </p>
+
+    <p>
+        <label>DL Support Level (mm)</label>
+        <input id="dl" value="1846">
+    </p>
+
+    <p>
+        <label>RS Support Level (mm)</label>
+        <input id="rs" value="337.5">
+    </p>
+
+    <p>
+        <label>Barrier Height (mm)</label>
+        <input id="bh" value="1100">
+    </p>
+
+</div>
+
+<div class="section">
+
+    <h2>Loads</h2>
+
+    <p>
+        <label>Wind Pressure (kPa)</label>
+        <input id="wind" value="2">
+    </p>
+
+    <p>
+        <label>Density (kg/m²)</label>
+        <input id="density" value="50">
+    </p>
+
+    <p>
+        <label>Barrier Load (kN)</label>
+        <input id="barrier" value="1">
+    </p>
+
+</div>
+
+<div class="section">
+
+    <button onclick="calculate()">
+        Calculate
+    </button>
+
+</div>
+
+<div class="section">
+
+    <div id="results">
+        Press Calculate
+    </div>
+
+</div>
+
 <script>
 
 function showDXFName(){
@@ -161,20 +309,4 @@ function calculate(){
             <tr><td>Upper R1</td><td>${upperWindR1.toFixed(3)} kN</td></tr>
             <tr><td>Upper R2</td><td>${upperWindR2.toFixed(3)} kN</td></tr>
             <tr><td>Lower R1</td><td>${lowerWindR1.toFixed(3)} kN</td></tr>
-            <tr><td>Lower R2</td><td>${lowerWindR2.toFixed(3)} kN</td></tr>
-        </table>
-
-        <h2>Barrier + Dead</h2>
-
-        <table>
-            <tr><td>Upper R1</td><td>${upperBarrierR1.toFixed(3)} kN</td></tr>
-            <tr><td>Upper R2</td><td>${upperBarrierR2.toFixed(3)} kN</td></tr>
-            <tr><td>Lower R1</td><td>${lowerBarrierR1.toFixed(3)} kN</td></tr>
-            <tr><td>Lower R2</td><td>${lowerBarrierR2.toFixed(3)} kN</td></tr>
-        </table>
-
-    `;
-
-}
-
-</script>
+            <tr><td>
