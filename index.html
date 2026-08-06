@@ -173,7 +173,12 @@ function loadDXF() {
 const lines =
     dxfContent.split(/\r\n|\n|\r/);
 
-alert("SEARCHING FOR LWPOLYLINE");
+alert(
+    dxfContent.substring(
+        dxfContent.indexOf("PANEL_GEOMETRY") - 200,
+        dxfContent.indexOf("PANEL_GEOMETRY") + 500
+    )
+);
    
 for(let i = 0; i < lines.length - 1; i++){
 
