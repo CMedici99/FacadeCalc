@@ -146,14 +146,21 @@ function showDXFName(){
         return;
     }
 
+    const file =
+        fileInput.files[0];
+
     document.getElementById(
         "dxfStatus"
     ).innerHTML =
 
     "Selected: "
     +
-    fileInput.files[0].name;
-
+    file.name
+    +
+    " (" +
+    file.size.toLocaleString()
+    +
+    " bytes)";
 }
 
 function calculate(){
