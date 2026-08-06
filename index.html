@@ -192,27 +192,23 @@ function loadDXF(){
     const reader =
         new FileReader();
 
-    reader.onload = function(event){
+reader.onload = function(event){
 
-        dxfContent =
-            event.target.result;
+    dxfContent =
+        event.target.result;
 
-       const lines =
-    dxfContent.split("\n");
+    const lines =
+        dxfContent.split(/\r?\n/);
 
-document.getElementById(
-    "dxfLoadStatus"
-).innerHTML =
+    document.getElementById(
+        "dxfLoadStatus"
+    ).innerHTML =
 
-    "DXF Loaded Successfully<br>" +
+        "DXF Loaded Successfully<br>" +
+        "Line Count = " +
+        lines.length;
 
-    "DXF contains " +
 
-    lines.length.toLocaleString()
-
-    +
-
-    " lines";
     };
 
     reader.readAsText(file);
