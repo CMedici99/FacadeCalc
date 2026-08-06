@@ -170,7 +170,7 @@ function loadDXF() {
             event.target.result;
         
      const pos =
-    dxfContent.indexOf("LWPOLYLINE");
+   dxfContent.toUpperCase().indexOf("LWPOLYLINE");
 
 if(pos >= 0){
 
