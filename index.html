@@ -325,6 +325,24 @@ function calculate(){
 }
 
 </script>
+function showDXFName(){
 
+    const fileInput =
+        document.getElementById("dxfFile");
+
+    if(fileInput.files.length === 0){
+        return;
+    }
+
+    const file =
+        fileInput.files[0];
+
+    document.getElementById("dxfStatus").innerHTML =
+        "Selected: "
+        + file.name
+        + " ("
+        + file.size.toLocaleString()
+        + " bytes)";
+}
 </body>
 </html>
