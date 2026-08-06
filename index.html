@@ -66,9 +66,16 @@ td{
 
 <h2>DXF Upload</h2>
 
-<input type="file" accept=".dxf">
+<input
+    type="file"
+    id="dxfFile"
+    accept=".dxf"
+    onchange="showDXFName()"
+>
 
-<p>No DXF selected</p>
+<p id="dxfStatus">
+No DXF selected
+</p>
 
 </div>
 
@@ -124,6 +131,33 @@ Press Calculate
 
 <script>
 
+    <script>
+
+function showDXFName(){
+
+    const fileInput =
+        document.getElementById(
+            "dxfFile"
+        );
+
+    if(
+        fileInput.files.length === 0
+    ){
+        return;
+    }
+
+    document.getElementById(
+        "dxfStatus"
+    ).innerHTML =
+
+    "Selected: "
+    +
+    fileInput.files[0].name;
+
+}
+
+function calculate(){
+    
 function calculate(){
 
     const width = Number(document.getElementById("width").value);
