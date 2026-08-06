@@ -1,26 +1,26 @@
-let dxfContent = "";
+<script> 
+
+    let dxfContent = "";
 
 function loadDXF() {
 
     const fileInput = document.getElementById("dxfFile");
-    const status = document.getElementById("dxfStatus");
-    const loadStatus = document.getElementById("dxfLoadStatus");
+    const dxfStatus = document.getElementById("dxfStatus");
+    const dxfLoadStatus = document.getElementById("dxfLoadStatus");
 
     if (!fileInput.files.length) {
-        status.textContent = "No DXF selected";
-        loadStatus.textContent = "DXF not loaded";
+
+        dxfStatus.textContent = "No DXF selected";
+        dxfLoadStatus.textContent = "DXF not loaded";
         return;
     }
 
     const file = fileInput.files[0];
 
-    status.textContent =
-        file.name +
-        " (" +
-        file.size.toLocaleString() +
-        " bytes)";
+    dxfStatus.textContent =
+        `${file.name} (${file.size.toLocaleString()} bytes)`;
 
-    loadStatus.textContent = "Loading DXF...";
+    dxfLoadStatus.textContent = "Loading DXF...";
 
     const reader = new FileReader();
 
@@ -49,20 +49,18 @@ function loadDXF() {
         const layerList =
             Array.from(layers).sort();
 
-        loadStatus.innerHTML =
-            "<strong>DXF Loaded Successfully</strong>" +
+        dxfLoadStatus.innerHTML =
+            "<b>DXF Loaded Successfully</b><br>" +
+            "Line Count: " + lines.length +
             "<br>" +
-            "Line Count: " +
-            lines.length +
-            "<br>" +
-            "Layer Count: " +
-            layerList.length +
+            "Layer Count: " + layerList.length +
             "<br><br>" +
             layerList.join("<br>");
     };
 
     reader.onerror = function () {
-        loadStatus.textContent =
+
+        dxfLoadStatus.textContent =
             "DXF Read Failed";
     };
 
@@ -96,8 +94,7 @@ function calculate() {
         Number(document.getElementById("barrier").value);
 
     const area =
-        (width / 1000) *
-        (height / 1000);
+        (width / 1000) * (height / 1000);
 
     const totalWind =
         area * wind;
@@ -112,20 +109,16 @@ function calculate() {
         (height / 1000) / 2;
 
     const topReaction =
-        totalWind *
-        ((cg - rs / 1000) / spacing);
+        totalWind * ((cg - rs / 1000) / spacing);
 
     const bottomReaction =
-        totalWind -
-        topReaction;
+        totalWind - topReaction;
 
     const barrierTop =
-        barrier *
-        (((bh / 1000) - (rs / 1000)) / spacing);
+        barrier * (((bh / 1000) - (rs / 1000)) / spacing);
 
     const barrierBottom =
-        barrier -
-        barrierTop;
+        barrier - barrierTop;
 
     const y = 0.175;
     const zi = 0.065;
@@ -182,6 +175,7 @@ function calculate() {
 
     document.getElementById("results").innerHTML = `
         <h2>Summary</h2>
+
         <table>
             <tr><td>Area</td><td>${area.toFixed(3)} m²</td></tr>
             <tr><td>Support Spacing</td><td>${(spacing * 1000).toFixed(1)} mm</td></tr>
@@ -190,6 +184,7 @@ function calculate() {
         </table>
 
         <h2>Wind + Dead</h2>
+
         <table>
             <tr><td>Upper R1</td><td>${upperWindR1.toFixed(3)} kN</td></tr>
             <tr><td>Upper R2</td><td>${upperWindR2.toFixed(3)} kN</td></tr>
@@ -198,6 +193,7 @@ function calculate() {
         </table>
 
         <h2>Barrier + Dead</h2>
+
         <table>
             <tr><td>Upper R1</td><td>${upperBarrierR1.toFixed(3)} kN</td></tr>
             <tr><td>Upper R2</td><td>${upperBarrierR2.toFixed(3)} kN</td></tr>
@@ -206,3 +202,6 @@ function calculate() {
         </table>
     `;
 }
+
+
+</script>
