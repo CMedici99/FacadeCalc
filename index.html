@@ -442,19 +442,39 @@ rsLevel.toFixed(1) +
 barrierHeight.toFixed(1) +
 
 "<br><br>" +
-
 "DL Markers: " +
 dlPoints.length +
 
 "<br>" +
+
+"DL Values: " +
+(dlPoints.length
+    ? dlPoints.join(", ")
+    : "None") +
+
+"<br><br>" +
 
 "RS Markers: " +
 rsPoints.length +
 
 "<br>" +
 
+"RS Values: " +
+(rsPoints.length
+    ? rsPoints.join(", ")
+    : "None") +
+
+"<br><br>" +
+
 "BR Markers: " +
-brPoints.length;
+brPoints.length +
+
+"<br>" +
+
+"BR Values: " +
+(brPoints.length
+    ? brPoints.join(", ")
+    : "None");
        
     };
 
