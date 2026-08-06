@@ -169,7 +169,18 @@ function loadDXF() {
         dxfContent =
             event.target.result;
         
-        console.log(dxfContent);
+     const pos =
+    dxfContent.indexOf("LWPOLYLINE");
+
+if(pos >= 0){
+
+    alert(
+        dxfContent.substring(
+            pos,
+            pos + 1000
+        )
+    );
+}
 
         const lines =
             dxfContent.split(/\r\n|\n|\r/);
