@@ -414,9 +414,41 @@ dxfLoadStatus.innerHTML =
 
     "<br><br>" +
 
-    "<strong>All Layers</strong><br>" +
+"<strong>All Layers</strong><br>" +
 
-    layerList.join("<br>");
+layerList.join("<br>") +
+
+"<br><br>" +
+
+"<strong>Extracted Data</strong><br>" +
+
+"DL Level: " +
+dlLevel.toFixed(1) +
+
+"<br>" +
+
+"RS Level: " +
+rsLevel.toFixed(1) +
+
+"<br>" +
+
+"Barrier Y: " +
+barrierHeight.toFixed(1) +
+
+"<br><br>" +
+
+"DL Markers: " +
+dlPoints.length +
+
+"<br>" +
+
+"RS Markers: " +
+rsPoints.length +
+
+"<br>" +
+
+"BR Markers: " +
+brPoints.length;
        
     };
 
