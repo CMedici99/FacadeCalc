@@ -1,148 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>FacadeCalc v0.5.1</title>
-
-<style>
-body{
-    font-family:Segoe UI, Arial, sans-serif;
-    max-width:1200px;
-    margin:auto;
-    padding:20px;
-    background:#f5f5f5;
-}
-
-.section{
-    background:white;
-    padding:20px;
-    margin-bottom:20px;
-    border-radius:8px;
-}
-
-label{
-    display:inline-block;
-    width:220px;
-}
-
-input{
-    width:160px;
-    padding:6px;
-}
-
-button{
-    padding:10px 20px;
-    background:#0078d4;
-    color:white;
-    border:none;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-td{
-    border:1px solid #ccc;
-    padding:8px;
-}
-
-.governing{
-    background:#e8f5e9;
-    padding:15px;
-    margin-top:20px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="section">
-<h1>FacadeCalc v0.5.1</h1>
-<p>Validated TN14 Calculator</p>
-</div>
-    
-<div class="section">
-
-<h2>DXF Upload</h2>
-
-<input
-    type="file"
-    id="dxfFile"
-    accept=".dxf"
-    onchange="showDXFName()"
->
-
-<p id="dxfStatus">
-No DXF selected
-</p>
-
-</div>
-
-<div class="section">
-<h2>Geometry</h2>
-
-<input type="file">
-
-<p>
-No DXF selected
-</p>
-
-</div>
-    
-<div class="section">
-    
-<h2>Geometry</h2>
-
-<p><label>Panel Width (mm)</label><input id="width" value="1000"></p>
-
-<p><label>Panel Height (mm)</label><input id="height" value="2029"></p>
-
-<p><label>DL Support Level (mm)</label><input id="dl" value="1846"></p>
-
-<p><label>RS Support Level (mm)</label><input id="rs" value="337.5"></p>
-
-<p><label>Barrier Height (mm)</label><input id="bh" value="1100"></p>
-
-</div>
-
-<div class="section">
-<h2>Loads</h2>
-
-<p><label>Wind Pressure (kPa)</label><input id="wind" value="2"></p>
-
-<p><label>Density (kg/m²)</label><input id="density" value="50"></p>
-
-<p><label>Barrier Load (kN)</label><input id="barrier" value="1"></p>
-
-</div>
-
-<div class="section">
-<button onclick="calculate()">
-Calculate
-</button>
-</div>
-
-<div class="section">
-<div id="results">
-Press Calculate
-</div>
-</div>
-
 <script>
-
-    <script>
 
 function showDXFName(){
 
     const fileInput =
-        document.getElementById(
-            "dxfFile"
-        );
+        document.getElementById("dxfFile");
 
-    if(
-        fileInput.files.length === 0
-    ){
+    if(fileInput.files.length === 0){
         return;
     }
 
@@ -153,61 +16,72 @@ function showDXFName(){
         "dxfStatus"
     ).innerHTML =
 
-    "Selected: "
-    +
-    file.name
-    +
-    " (" +
-    file.size.toLocaleString()
-    +
-    " bytes)";
+        "Selected: "
+        + file.name
+        + " ("
+        + file.size.toLocaleString()
+        + " bytes)";
 }
 
 function calculate(){
-    
-function calculate(){
 
-    const width = Number(document.getElementById("width").value);
-    const height = Number(document.getElementById("height").value);
+    const width =
+        Number(document.getElementById("width").value);
 
-    const dl = Number(document.getElementById("dl").value);
-    const rs = Number(document.getElementById("rs").value);
+    const height =
+        Number(document.getElementById("height").value);
 
-    const bh = Number(document.getElementById("bh").value);
+    const dl =
+        Number(document.getElementById("dl").value);
 
-    const wind = Number(document.getElementById("wind").value);
-    const density = Number(document.getElementById("density").value);
-    const barrier = Number(document.getElementById("barrier").value);
+    const rs =
+        Number(document.getElementById("rs").value);
 
-    const area = (width/1000)*(height/1000);
+    const bh =
+        Number(document.getElementById("bh").value);
 
-    const totalWind = area * wind;
+    const wind =
+        Number(document.getElementById("wind").value);
+
+    const density =
+        Number(document.getElementById("density").value);
+
+    const barrier =
+        Number(document.getElementById("barrier").value);
+
+    const area =
+        (width / 1000) *
+        (height / 1000);
+
+    const totalWind =
+        area * wind;
 
     const totalDead =
         area * density * 9.81 / 1000;
 
     const spacing =
-        (dl-rs)/1000;
+        (dl - rs) / 1000;
 
     const cg =
-        (height/1000)/2;
+        (height / 1000) / 2;
 
     const topReaction =
         totalWind *
-        (cg-rs/1000) /
+        (cg - rs / 1000) /
         spacing;
 
     const bottomReaction =
-        totalWind - topReaction;
+        totalWind -
+        topReaction;
 
     const barrierTop =
         barrier *
-        ((bh/1000)-(rs/1000))
-        /
-        spacing;
+        ((bh / 1000) - (rs / 1000))
+        / spacing;
 
     const barrierBottom =
-        barrier - barrierTop;
+        barrier -
+        barrierTop;
 
     const y = 0.175;
     const zi = 0.065;
@@ -215,96 +89,92 @@ function calculate(){
     const e = 0.055;
 
     const denominator =
-        (2*e+d);
+        (2 * e + d);
 
     const deadBracket =
-        (totalDead/2)*1.35;
+        (totalDead / 2) * 1.35;
 
     const upperWindR2 =
         (
-            deadBracket*zi +
-            ((topReaction/2)*1.5)*
-            (y/2+e)
-        )/denominator;
+            deadBracket * zi +
+            ((topReaction / 2) * 1.5)
+            *
+            (y / 2 + e)
+        ) / denominator;
 
     const upperWindR1 =
-        ((topReaction/2)*1.5)
+        ((topReaction / 2) * 1.5)
         -
         upperWindR2;
 
     const lowerWindR2 =
         (
-            ((bottomReaction/2)*1.5)
+            ((bottomReaction / 2) * 1.5)
             *
-            (y/2+e)
-        )/denominator;
+            (y / 2 + e)
+        ) / denominator;
 
     const lowerWindR1 =
-        ((bottomReaction/2)*1.5)
+        ((bottomReaction / 2) * 1.5)
         -
         lowerWindR2;
 
     const upperBarrierR2 =
         (
-            deadBracket*zi +
-            ((barrierTop/2)*1.5)
+            deadBracket * zi +
+            ((barrierTop / 2) * 1.5)
             *
-            (y/2+e)
-        )/denominator;
+            (y / 2 + e)
+        ) / denominator;
 
     const upperBarrierR1 =
-        ((barrierTop/2)*1.5)
+        ((barrierTop / 2) * 1.5)
         -
         upperBarrierR2;
 
     const lowerBarrierR2 =
         (
-            ((barrierBottom/2)*1.5)
+            ((barrierBottom / 2) * 1.5)
             *
-            (y/2+e)
-        )/denominator;
+            (y / 2 + e)
+        ) / denominator;
 
     const lowerBarrierR1 =
-        ((barrierBottom/2)*1.5)
+        ((barrierBottom / 2) * 1.5)
         -
         lowerBarrierR2;
 
-    document.getElementById(
-        "results"
-    ).innerHTML = `
+    document.getElementById("results").innerHTML = `
 
-    <h2>Summary</h2>
+        <h2>Summary</h2>
 
-    <table>
-        <tr><td>Area</td><td>${area.toFixed(3)} m²</td></tr>
-        <tr><td>Support Spacing</td><td>${(spacing*1000).toFixed(1)} mm</td></tr>
-        <tr><td>Total Wind Load</td><td>${totalWind.toFixed(3)} kN</td></tr>
-        <tr><td>Total Dead Load</td><td>${totalDead.toFixed(3)} kN</td></tr>
-    </table>
+        <table>
+            <tr><td>Area</td><td>${area.toFixed(3)} m²</td></tr>
+            <tr><td>Support Spacing</td><td>${(spacing * 1000).toFixed(1)} mm</td></tr>
+            <tr><td>Total Wind Load</td><td>${totalWind.toFixed(3)} kN</td></tr>
+            <tr><td>Total Dead Load</td><td>${totalDead.toFixed(3)} kN</td></tr>
+        </table>
 
-    <h2>Wind + Dead</h2>
+        <h2>Wind + Dead</h2>
 
-    <table>
-        <tr><td>Upper R1</td><td>${upperWindR1.toFixed(3)} kN</td></tr>
-        <tr><td>Upper R2</td><td>${upperWindR2.toFixed(3)} kN</td></tr>
-        <tr><td>Lower R1</td><td>${lowerWindR1.toFixed(3)} kN</td></tr>
-        <tr><td>Lower R2</td><td>${lowerWindR2.toFixed(3)} kN</td></tr>
-    </table>
+        <table>
+            <tr><td>Upper R1</td><td>${upperWindR1.toFixed(3)} kN</td></tr>
+            <tr><td>Upper R2</td><td>${upperWindR2.toFixed(3)} kN</td></tr>
+            <tr><td>Lower R1</td><td>${lowerWindR1.toFixed(3)} kN</td></tr>
+            <tr><td>Lower R2</td><td>${lowerWindR2.toFixed(3)} kN</td></tr>
+        </table>
 
-    <h2>Barrier + Dead</h2>
+        <h2>Barrier + Dead</h2>
 
-    <table>
-        <tr><td>Upper R1</td><td>${upperBarrierR1.toFixed(3)} kN</td></tr>
-        <tr><td>Upper R2</td><td>${upperBarrierR2.toFixed(3)} kN</td></tr>
-        <tr><td>Lower R1</td><td>${lowerBarrierR1.toFixed(3)} kN</td></tr>
-        <tr><td>Lower R2</td><td>${lowerBarrierR2.toFixed(3)} kN</td></tr>
-    </table>
+        <table>
+            <tr><td>Upper R1</td><td>${upperBarrierR1.toFixed(3)} kN</td></tr>
+            <tr><td>Upper R2</td><td>${upperBarrierR2.toFixed(3)} kN</td></tr>
+            <tr><td>Lower R1</td><td>${lowerBarrierR1.toFixed(3)} kN</td></tr>
+            <tr><td>Lower R2</td><td>${lowerBarrierR2.toFixed(3)} kN</td></tr>
+        </table>
 
     `;
 
 }
 
 </script>
-
-</body>
-</html>
