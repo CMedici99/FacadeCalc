@@ -164,7 +164,7 @@ function loadDXF() {
     const reader =
         new FileReader();
 
-    reader.onload = function(event){
+       reader.onload = function(event){
 
         dxfContent =
             event.target.result;
@@ -172,6 +172,11 @@ function loadDXF() {
         const lines =
             dxfContent.split(/\r\n|\n|\r/);
 
+        const layers =
+            new Set();
+
+        for(let i = 0; i < lines.length - 1; i++){
+        
         const layers =
             new Set();
 
