@@ -1,11 +1,255 @@
 <script>
 
+let dxfContent = "";
+
 function loadDXF() {
-    alert("DXF button works");
+
+    const fileInput =
+        document.getElementById("dxfFile");
+
+    const status =
+        document.getElementById("dxfStatus");
+
+    const loadStatus =
+        document.getElementById("dxfLoadStatus");
+
+    if (!fileInput || fileInput.files.length === 0) {
+
+        status.innerHTML =
+            "No DXF selected";
+
+        loadStatus.innerHTML =
+            "DXF not loaded";
+
+        return;
+    }
+
+    const file =
+        fileInput.files[0];
+
+    status.innerHTML =
+        "Selected: " +
+        file.name +
+        " (" +
+        file.size.toLocaleString() +
+        " bytes)";
+
+    loadStatus.innerHTML =
+        "Loading DXF...";
+
+    const reader =
+        new FileReader();
+
+    reader.onload = function(event) {
+
+        dxfContent =
+            event.target.result;
+
+        const lines =
+            dxfContent.split(/\r?\n/);
+
+        const upperDXF =
+            dxfContent.toUpperCase();
+
+        const hasTables =
+            upperDXF.includes("TABLES");
+
+        const hasEntities =
+            upperDXF.includes("ENTITIES");
+
+        const layerMatches =
+            upperDXF.match(/\bLAYER\b/g);
+
+        const layerCount =
+            layerMatches
+                ? layerMatches.length
+                : 0;
+
+        loadStatus.innerHTML =
+
+            "<strong>DXF Loaded Successfully</strong><br>" +
+
+            "Line Count: " +
+            lines.length +
+
+            "<br>" +
+
+            "TABLES: " +
+            (hasTables ? "YES" : "NO") +
+
+            "<br>" +
+
+            "ENTITIES: " +
+            (hasEntities ? "YES" : "NO") +
+
+            "<br>" +
+
+            "Layer References: " +
+            layerCount;
+    };
+
+    reader.onerror = function() {
+
+        loadStatus.innerHTML =
+            "DXF Read Failed";
+
+    };
+
+    reader.readAsText(file);
 }
 
-function calculate() {
-    alert("Calculate button works");
+function calculate(){
+
+    const width =
+        Number(document.getElementById("width").value);
+
+    const height =
+        Number(document.getElementById("height").value);
+
+    const dl =
+        Number(document.getElementById("dl").value);
+
+    const rs =
+        Number(document.getElementById("rs").value);
+
+    const bh =
+        Number(document.getElementById("bh").value);
+
+    const wind =
+        Number(document.getElementById("wind").value);
+
+    const density =
+        Number(document.getElementById("density").value);
+
+    const barrier =
+        Number(document.getElementById("barrier").value);
+
+    const area =
+        (width/1000)*(height/1000);
+
+    const totalWind =
+        area * wind;
+
+    const totalDead =
+        area * density * 9.81 / 1000;
+
+    const spacing =
+        (dl-rs)/1000;
+
+    const cg =
+        (height/1000)/2;
+
+    const topReaction =
+        totalWind *
+        (cg-rs/1000) /
+        spacing;
+
+    const bottomReaction =
+        totalWind -
+        topReaction;
+
+    const barrierTop =
+        barrier *
+        ((bh/1000)-(rs/1000))
+        /
+        spacing;
+
+    const barrierBottom =
+        barrier -
+        barrierTop;
+
+    const y = 0.175;
+    const zi = 0.065;
+    const d = 0.065;
+    const e = 0.055;
+
+    const denominator =
+        (2*e+d);
+
+    const deadBracket =
+        (totalDead/2)*1.35;
+
+    const upperWindR2 =
+        (
+            deadBracket*zi +
+            ((topReaction/2)*1.5)*
+            (y/2+e)
+        )/denominator;
+
+    const upperWindR1 =
+        ((topReaction/2)*1.5)
+        -
+        upperWindR2;
+
+    const lowerWindR2 =
+        (
+            ((bottomReaction/2)*1.5)
+            *
+            (y/2+e)
+        )/denominator;
+
+    const lowerWindR1 =
+        ((bottomReaction/2)*1.5)
+        -
+        lowerWindR2;
+
+    const upperBarrierR2 =
+        (
+            deadBracket*zi +
+            ((barrierTop/2)*1.5)
+            *
+            (y/2+e)
+        )/denominator;
+
+    const upperBarrierR1 =
+        ((barrierTop/2)*1.5)
+        -
+        upperBarrierR2;
+
+    const lowerBarrierR2 =
+        (
+            ((barrierBottom/2)*1.5)
+            *
+            (y/2+e)
+        )/denominator;
+
+    const lowerBarrierR1 =
+        ((barrierBottom/2)*1.5)
+        -
+        lowerBarrierR2;
+
+    document.getElementById(
+        "results"
+    ).innerHTML = `
+
+    <h2>Summary</h2>
+
+    <table>
+        <tr><td>Area</td><td>${area.toFixed(3)} m²</td></tr>
+        <tr><td>Support Spacing</td><td>${(spacing*1000).toFixed(1)} mm</td></tr>
+        <tr><td>Total Wind Load</td><td>${totalWind.toFixed(3)} kN</td></tr>
+        <tr><td>Total Dead Load</td><td>${totalDead.toFixed(3)} kN</td></tr>
+    </table>
+
+    <h2>Wind + Dead</h2>
+
+    <table>
+        <tr><td>Upper R1</td><td>${upperWindR1.toFixed(3)} kN</td></tr>
+        <tr><td>Upper R2</td><td>${upperWindR2.toFixed(3)} kN</td></tr>
+        <tr><td>Lower R1</td><td>${lowerWindR1.toFixed(3)} kN</td></tr>
+        <tr><td>Lower R2</td><td>${lowerWindR2.toFixed(3)} kN</td></tr>
+    </table>
+
+    <h2>Barrier + Dead</h2>
+
+    <table>
+        <tr><td>Upper R1</td><td>${upperBarrierR1.toFixed(3)} kN</td></tr>
+        <tr><td>Upper R2</td><td>${upperBarrierR2.toFixed(3)} kN</td></tr>
+        <tr><td>Lower R1</td><td>${lowerBarrierR1.toFixed(3)} kN</td></tr>
+        <tr><td>Lower R2</td><td>${lowerBarrierR2.toFixed(3)} kN</td></tr>
+    </table>
+
+    `;
 }
 
 </script>
