@@ -81,6 +81,12 @@ No DXF selected
 
 </p>
 
+<p id="dxfLoadStatus">
+
+DXF not loaded
+
+</p>
+
 </div>
 
 <div class="section">
@@ -153,6 +159,8 @@ Press Calculate
 
 <script>
 
+let dxfContent = "";
+
 function loadDXF(){
 
     const fileInput =
@@ -180,6 +188,24 @@ function loadDXF(){
         + " ("
         + file.size.toLocaleString()
         + " bytes)";
+
+    const reader =
+        new FileReader();
+
+    reader.onload = function(event){
+
+        dxfContent =
+            event.target.result;
+
+        document.getElementById(
+            "dxfLoadStatus"
+        ).innerHTML =
+
+            "DXF Loaded Successfully";
+    };
+
+    reader.readAsText(file);
+
 }
 
 function calculate(){
