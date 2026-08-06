@@ -164,35 +164,44 @@ function loadDXF() {
     const reader =
         new FileReader();
 
-       reader.onload = function(event){
+      reader.onload = function(event){
 
-        dxfContent =
-            event.target.result;
+    dxfContent =
+        event.target.result;
 
-        const lines =
-            dxfContent.split(/\r\n|\n|\r/);
+    const lines =
+        dxfContent.split(/\r\n|\n|\r/);
 
-        const layers =
-            new Set();
+    for(let i = 0; i < lines.length; i++){
 
-        for(let i = 0; i < lines.length - 1; i++){
-        
-        const layers =
-            new Set();
+        if(lines[i].trim() === "INSERT"){
 
-        for(let i = 0; i < lines.length - 1; i++){
+            alert(
+                lines.slice(
+                    i,
+                    i + 40
+                ).join("\n")
+            );
 
-            if(lines[i].trim() === "8"){
+            break;
+        }
+    }
 
-                const layerName =
-                    lines[i + 1].trim();
+    const layers =
+        new Set();
 
-                if(layerName){
-                    layers.add(layerName);
-                }
+    for(let i = 0; i < lines.length - 1; i++){
+
+        if(lines[i].trim() === "8"){
+
+            const layerName =
+                lines[i + 1].trim();
+
+            if(layerName){
+                layers.add(layerName);
             }
         }
-
+    }
    const layerList =
     Array.from(layers).sort();
 
