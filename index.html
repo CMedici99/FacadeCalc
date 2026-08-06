@@ -200,11 +200,13 @@ reader.onload = function(event){
     const lines =
         dxfContent.split(/\r?\n/);
 
-const hasEntities =
-    dxfContent.toUpperCase().includes("ENTITIES");
+const layerMatches =
+    dxfContent.match(/LAYER[\s\S]*?/gi);
 
-const hasTables =
-    dxfContent.toUpperCase().includes("TABLES");
+const layerCount =
+    layerMatches
+        ? layerMatches.length
+        : 0;
 
 document.getElementById(
     "dxfLoadStatus"
@@ -222,8 +224,13 @@ document.getElementById(
 
     "<br>" +
 
-    "ENTITIES: " +
-    (hasEntities ? "YES" : "NO");
+"ENTITIES: " +
+(hasEntities ? "YES" : "NO") +
+
+"<br>" +
+
+"Layer References: " +
+layerCount;
 
 
     };
