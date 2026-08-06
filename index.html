@@ -263,22 +263,29 @@ for(let i = 0; i < lines.length - 10; i++){
     let block = "";
     let y = 0;
 
-    for(let j = i; j < i + 40 && j < lines.length - 1; j++){
+for(let j = i + 1; j < lines.length - 1; j++){
 
-        const code =
-            lines[j].trim();
-
-        const value =
-            lines[j + 1].trim();
-
-        if(code === "2"){
-            block = value;
-        }
-
-        if(code === "20"){
-            y = Number(value);
-        }
+    if(
+        j > i + 1 &&
+        lines[j].trim() === "0"
+    ){
+        break;
     }
+
+    const code =
+        lines[j].trim();
+
+    const value =
+        lines[j + 1].trim();
+
+    if(code === "2"){
+        block = value;
+    }
+
+    if(code === "20"){
+        y = Number(value);
+    }
+}
 
     if(block === "DL"){
         dlPoints.push(y);
