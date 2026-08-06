@@ -169,26 +169,50 @@ function loadDXF() {
     dxfContent =
         event.target.result;
 
-    const lines =
-        dxfContent.split(/\r\n|\n|\r/);
+const lines =
+    dxfContent.split(/\r\n|\n|\r/);
 
-    for(let i = 0; i < lines.length; i++){
+const dlPoints = [];
+const rsPoints = [];
+const brPoints = [];
 
-        if(lines[i].trim() === "INSERT"){
+/* INSERT extraction loop here */
 
-            alert(
-                lines.slice(
-                    i,
-                    i + 40
-                ).join("\n")
-            );
+const dlLevel =
+    dlPoints.length
+        ? Math.max(...dlPoints)
+        : 0;
 
-            break;
-        }
-    }
+const rsLevel =
+    rsPoints.length
+        ? Math.min(...rsPoints)
+        : 0;
 
-    const layers =
-        new Set();
+const barrierHeight =
+    brPoints.length
+        ? brPoints[0]
+        : 0;
+
+if(dlLevel > 0){
+
+    document.getElementById("dl").value =
+        dlLevel.toFixed(1);
+}
+
+if(rsLevel > 0){
+
+    document.getElementById("rs").value =
+        rsLevel.toFixed(1);
+}
+
+if(barrierHeight > 0){
+
+    document.getElementById("bh").value =
+        barrierHeight.toFixed(1);
+}
+
+const layers =
+    new Set();
 
     for(let i = 0; i < lines.length - 1; i++){
 
