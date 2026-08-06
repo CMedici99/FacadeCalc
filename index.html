@@ -168,11 +168,12 @@ function loadDXF() {
       reader.onload = function(event){
 
     dxfContent =
-        event.target.result;
+    event.target.result;
 
-    console.log(dxfContent);
-          
-    const lines =
+document.getElementById("dxfLoadStatus").textContent =
+    dxfContent.substring(0,1000);
+
+const lines =
     dxfContent.split(/\r\n|\n|\r/);
 
 alert(
